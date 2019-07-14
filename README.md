@@ -1,7 +1,3 @@
-# NOTE
-
-(Daniel also once [blogged about this](https://daniel.haxx.se/blog/2018/06/03/inside-firefoxs-doh-engine/)) 
-
 # Preferences
 
 All preferences for the DNS-over-HTTPS functionality in Firefox are located under the `network.trr` prefix (TRR == Trusted Recursive Resolver). The support for these were added in Firefox 62.
@@ -67,7 +63,33 @@ Entries are added to the TRR blacklist when the resolve fails with TRR but works
 
 (default: false) For each normal name resolve, Firefox issues one HTTP request for A entries and another for AAAA entries. The responses come back separately and can come in any order. If the A records arrive first, Firefox will - as an optimization - continue and use those without waiting for the second response. If the AAAA records arrive first, Firefox will only continue and use them immediately if this option is set to **true**.
 
-# Does it work?
+## network.trr.max-fails
+
+(default: 5) If this many DoH requests in a row fails, consider TRR broken and go back to verify-NS state. This is meant to detect situations when the DoH server dies.
+
+## network.trr.disable-ECS
+
+(default: true) If set, TRR asks the resolver to disable ECS (EDNS Client Subnet – the method where the resolver passes on the subnet of the client asking the question). Some resolvers will use ECS to the upstream if this request is not passed on to them.
+
+# Split-horizon and blacklist
+
+With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know from where the request comes (which also enables quite a degree of spying) and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
+
+As a precaution, Firefox features a system that detects if a name can’t be resolved at all with TRR and can then fall back and try again with just the native resolver (the so called TRR-first mode). Ending up in this scenario is of course slower and leaks the name over clear-text UDP but this safety mechanism exists to avoid users risking ending up in a black hole where certain sites can’t be accessed. Names that causes such TRR failures are then put in an internal dynamic blacklist so that subsequent uses of that name automatically avoids using DNS-over-HTTPS for a while (see the blacklist-duration pref to control that period). Of course this fall-back is not in use if TRR-only mode is selected.
+
+In addition, if a host’s address is retrieved via TRR and Firefox subsequently fails to connect to that host, it will redo the resolve without DOH and retry the connect again just to make sure that it wasn’t a split-horizon situation that caused the problem.
+
+When a host name is added to the TRR blacklist, its domain also gets checked in the background to see if that whole domain perhaps should be blacklisted to ensure a smoother ride going forward.
+
+Additionally, “localhost” and all names in the “.local” TLD are sort of hard-coded as blacklisted and will never be resolved with TRR. (Unless you run TRR-only…)
+
+# Bootstrap
+
+You specify the DOH service as a full URI with a name that needs to be resolved, and in a cold start Firefox won’t know the IP address of that name and thus needs to resolve it first (or use the provided address you can set with network.trr.bootstrapAddress). Firefox will then use the native resolver for that, until TRR has proven itself to work by resolving the network.trr.confirmationNS test domain. Firefox will also by default wait for the captive portal check to signal “OK” before it uses TRR, unless you tell it otherwise.
+
+As a result of this bootstrap procedure, and if you’re not in TRR-only mode, you might still get  a few native name resolves done at initial Firefox startups. Just telling you this so you don’t panic if you see a few show up.
+
+# about:networking
 
 Go to about:networking, click the DNS link in the left-side menu. That shows the contents of the in-memory DNS cache. The TRR column says "true" for host names that were resolved using TRR (DNS-over-HTTPS).
 
