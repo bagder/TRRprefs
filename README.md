@@ -19,11 +19,13 @@ set which resolver mode you want.
 
 ## network.trr.uri
 
-(default: none) set the URI for your DOH server. That's the URL Firefox will issue its HTTP request to. It must be a HTTPS URL. If "useGET" is enabled, Firefox will append "?ct&dns=...." to the URI when it makes its HTTP requests. For the default POST requests, they will be issued to exactly the specified URI.
+(default: none) set the URI for your DOH server. That's the URL Firefox will issue its HTTP request to. It must be a HTTPS URL. If "useGET" is enabled, Firefox will append "?dns=...." to the URI when it makes its HTTP requests. For the default POST requests, they will be issued to exactly the specified URI.
 
 Publicly announced servers include:
 - https://mozilla.cloudflare-dns.com/dns-query
 - https://dns.google/dns-query
+
+For more servers, see the inofficial [list of DoH servers](https://github.com/curl/curl/wiki/DNS-over-HTTPS).
 
 ## network.trr.credentials
 
