@@ -1,10 +1,10 @@
 # NOTE
 
-A blog post with more updated info then this has been posted [here](https://daniel.haxx.se/blog/2018/06/03/inside-firefoxs-doh-engine/)
+(Daniel also once [blogged about this](https://daniel.haxx.se/blog/2018/06/03/inside-firefoxs-doh-engine/)) 
 
 # Preferences
 
-All preferences for the DNS-over-HTTPS functionality in Firefox are located under the "network.trr" prefix (TRR == Trusted Recursive Resolver). The support for these are targeted for shipping in release Firefox 62.
+All preferences for the DNS-over-HTTPS functionality in Firefox are located under the `network.trr` prefix (TRR == Trusted Recursive Resolver). The support for these were added in Firefox 62.
 
 ## network.trr.mode 
 set which resolver mode you want.
