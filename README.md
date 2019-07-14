@@ -27,7 +27,7 @@ set which resolver mode you want.
 
 Publicly announced servers include:
 - https://mozilla.cloudflare-dns.com/dns-query
-- https://dns.google.com/experimental
+- https://dns.google/dns-query
 
 ## network.trr.credentials
 
