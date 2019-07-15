@@ -19,29 +19,29 @@ set which resolver mode you want.
 
 ## network.trr.uri
 
-(default: none) set the URI for your DOH server. That's the URL Firefox will issue its HTTP request to. It must be a HTTPS URL. If "useGET" is enabled, Firefox will append "?dns=...." to the URI when it makes its HTTP requests. For the default POST requests, they will be issued to exactly the specified URI.
+(default: none) set the URI for your DoH server. That's the URL Firefox will issue its HTTP request to. It must be a HTTPS URL. If "useGET" is enabled, Firefox will append "?dns=...." to the URI when it makes its HTTP requests. For the default POST requests, they will be issued to exactly the specified URI.
 
 Publicly announced servers include:
 - https://mozilla.cloudflare-dns.com/dns-query
 - https://dns.google/dns-query
 
-For more servers, see the inofficial [list of DoH servers](https://github.com/curl/curl/wiki/DNS-over-HTTPS).
+For more servers, see the unofficial [list of DoH servers](https://github.com/curl/curl/wiki/DNS-over-HTTPS).
 
 ## network.trr.credentials
 
-(default: none) set credentials that will be used in the HTTP requests to the DOH end-point. It is the right side content, the value, sent in the Authorization: request header.
+(default: none) set credentials that will be used in the HTTP requests to the DoH end-point. It is the right-hand side content, the value, sent in the Authorization: request header.
 
 ## network.trr.wait-for-portal
 
-(default: true) set this boolean to tell Firefox true to wait for the captive portal detection to okay first before TRR is used. (on Android, this will default to **false** since the captive portal handling is done outside of Firefox, by the OS itself.)
+(default: true) set this boolean to **true** to tell Firefox to wait for the captive portal detection before TRR is used. (on Android, this will default to **false** since the captive portal handling is done outside of Firefox, by the OS itself.)
 
 ## network.trr.allow-rfc1918
 
-(default: false) set this to true to allow RFC 1918 private addresses in TRR responses. When set false, any such response will be considered a wrong response that won't be used.
+(default: false) set this to true to allow RFC 1918 private addresses in TRR responses. When set to false, any such response will be considered invalid and won't be used.
 
 ## network.trr.useGET
 
-(default: false) When the browser issues a request to the DOH server to resolve host names, it can do that using POST or GET. By default Firefox will use POST, but by toggling this you can enforce GET to be used instead.
+(default: false) When the browser issues a request to the DoH server to resolve host names, it can do that using POST or GET. By default Firefox will use POST, but by toggling this you can enforce GET to be used instead.
 
 ## network.trr.confirmationNS
 
@@ -55,43 +55,43 @@ For more servers, see the inofficial [list of DoH servers](https://github.com/cu
 
 (default: 60) is the number of seconds a name will be kept in the TRR blacklist until it expires and then will be tried with TRR again. The default duration is one minute.
 
-Entries are added to the TRR blacklist when the resolve fails with TRR but works with the native resolver, or if the subsequent connection with a TRR resolved host name fails but works with a retry that is resolved natively. When a host name is added to the TRR, its domain gets checked in the background to see if the whole domain should be blacklisted to ensure a smoother ride going forward.
+Entries are added to the TRR blacklist when the resolution fails with TRR but works with the native resolver, or if the subsequent connection with a TRR resolved host name fails but works with a retry that is resolved natively. When a hostname is added to the TRR, its domain gets checked in the background to see if the whole domain should be blacklisted to ensure a smoother ride going forward.
 
 ## network.trr.request-timeout
 
-(default: 3000) is the number of milliseconds a request to and corresponding response from the DOH server is allowed to take until considered failed and discarded.
+(default: 3000) is the number of milliseconds a request and the corresponding response from the DoH server is allowed to take until considered failed and discarded.
 
 ## network.trr.early-AAAA
 
-(default: false) For each normal name resolve, Firefox issues one HTTP request for A entries and another for AAAA entries. The responses come back separately and can come in any order. If the A records arrive first, Firefox will - as an optimization - continue and use those without waiting for the second response. If the AAAA records arrive first, Firefox will only continue and use them immediately if this option is set to **true**.
+(default: false) For each normal name resolution, Firefox issues one HTTP request for A entries and another for AAAA entries. The responses come back separately and can come in any order. If the A records arrive first, Firefox will—as an optimization— continue and use them without waiting for the second response. If the AAAA records arrive first, Firefox will only continue and use them immediately if this option is set to **true**.
 
 ## network.trr.max-fails
 
-(default: 5) If this many DoH requests in a row fails, consider TRR broken and go back to verify-NS state. This is meant to detect situations when the DoH server dies.
+(default: 5) If this many DoH requests fail in a row, consider TRR broken and go back to verify-NS state. This is meant to detect situations when the DoH server dies.
 
 ## network.trr.disable-ECS
 
-(default: true) If set, TRR asks the resolver to disable ECS (EDNS Client Subnet – the method where the resolver passes on the subnet of the client asking the question). Some resolvers will use ECS to the upstream if this request is not passed on to them.
+(default: true) If set, TRR asks the resolver to disable ECS (EDNS Client Subnet: the method where the resolver passes on the subnet of the client asking the question). Some resolvers will use ECS to the upstream if this request is not passed on to them.
 
 ## network.trr.excluded-domains
 
-(default: `localhost,local`) Comma-separated list of domain names to exclude from using TRR and thus are resolved using the native resolver instead.
+(default: `localhost,local`) Comma separated list of domain names to be resolved using the native resolver instead of TRR.
 
 # Split-horizon and blacklist
 
-With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know from where the request comes (which also enables quite a degree of spying) and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
+With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know where the request are coming frome and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
 
-As a precaution, Firefox features a system that detects if a name can’t be resolved at all with TRR and can then fall back and try again with just the native resolver (the so called TRR-first mode). Ending up in this scenario is of course slower and leaks the name over clear-text UDP but this safety mechanism exists to avoid users risking ending up in a black hole where certain sites can’t be accessed. Names that causes such TRR failures are then put in an internal dynamic blacklist so that subsequent uses of that name automatically avoids using DNS-over-HTTPS for a while (see the blacklist-duration pref to control that period). Of course this fall-back is not in use if TRR-only mode is selected.
+As a precaution, Firefox features a system that detects if a name can’t be resolved at all with TRR and can retry with the native resolver (the so called TRR-first mode). Ending up in this scenario is slower and leaks the name in cleartext, but this safety mechanism exists to avoid users risking ending up in a black hole where certain sites can’t be accessed. Names that cause such TRR failures are then put into a dynamic blacklist so that subsequent uses of that name automatically avoid using DoH for a while (see the `blacklist-duration` pref to control that period). This fallback is not used if TRR-only mode is selected.
 
-In addition, if a host’s address is retrieved via TRR and Firefox subsequently fails to connect to that host, it will redo the resolve without DOH and retry the connect again just to make sure that it wasn’t a split-horizon situation that caused the problem.
+In addition, if a host's address is retrieved via TRR and Firefox subsequently fails to connect to that host, it will redo the resolution without DoH and retry the connection to ensure t it wasn't a split horizon setup that caused the problem.
 
-When a host name is added to the TRR blacklist, its domain also gets checked in the background to see if that whole domain perhaps should be blacklisted to ensure a smoother ride going forward.
+When a hostname is added to the TRR blacklist, its domain also gets checked in the background to see if that whole domain perhaps should be blacklisted to ensure a smoother ride going forward.
 
 Additionally, “localhost” and all names in the “.local” TLD are sort of hard-coded as blacklisted and will never be resolved with TRR. (Unless you run TRR-only…)
 
 # Bootstrap
 
-You specify the DOH service as a full URI with a name that needs to be resolved, and in a cold start Firefox won’t know the IP address of that name and thus needs to resolve it first (or use the provided address you can set with network.trr.bootstrapAddress). Firefox will then use the native resolver for that, until TRR has proven itself to work by resolving the network.trr.confirmationNS test domain. Firefox will also by default wait for the captive portal check to signal “OK” before it uses TRR, unless you tell it otherwise.
+You specify the DoH service as a full URI with a name that needs to be resolved. On cold start Firefox won’t know the IP address to that name so it needs to resolve it first (unless `network.trr.bootstrapAddress` is set). Firefox will use the native resolver until TRR has proven itself to work by resolving the test domain configured by `network.trr.confirmationNS` preference. Firefox will also by default wait for the captive portal check to signal “OK” before it uses TRR, unless you tell it otherwise by `network.trr.wait-for-portal` preference.
 
 As a result of this bootstrap procedure, and if you’re not in TRR-only mode, you might still get  a few native name resolves done at initial Firefox startups. Just telling you this so you don’t panic if you see a few show up.
 
