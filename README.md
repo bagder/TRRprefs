@@ -73,6 +73,10 @@ Entries are added to the TRR blacklist when the resolve fails with TRR but works
 
 (default: true) If set, TRR asks the resolver to disable ECS (EDNS Client Subnet – the method where the resolver passes on the subnet of the client asking the question). Some resolvers will use ECS to the upstream if this request is not passed on to them.
 
+## network.trr.excluded-domains
+
+(default: `localhost,local`) Comma-separated list of domain names to exclude from using TRR and thus are resolved using the native resolver instead.
+
 # Split-horizon and blacklist
 
 With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know from where the request comes (which also enables quite a degree of spying) and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
