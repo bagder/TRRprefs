@@ -7,13 +7,13 @@ set which resolver mode you want.
 
 0 - **Off** (default). use standard native resolving only (don't use TRR at all)
 
-1 - **Race** native against TRR. Do them both in parallel and go with the one that returns a result first.
+1 - **Race** (removed)
 
 2 - **First**. Use TRR first, and only if the name resolve fails use the native resolver as a fallback.
 
 3 - **Only**. Only use TRR. Never use the native (after the initial setup).
 
-4 - **Shadow**. Runs the TRR resolves in parallel with the native for timing and measurements but uses only the native resolver results.
+4 - **Shadow**. (removed)
 
 5 - **Off by choice** This is the same as 0 but marks it as done by choice and not done by default.
 
