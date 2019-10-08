@@ -77,6 +77,10 @@ Entries are added to the TRR blacklist when the resolution fails with TRR but wo
 
 (default: `localhost,local`) Comma separated list of domain names to be resolved using the native resolver instead of TRR.
 
+## network.trr.resolvers
+
+(default: `[{ "name": "Cloudflare", "url": "https://mozilla.cloudflare-dns.com/dns-query" }]`) JSON list of DoH resolver providers that should be presented in the preferences GUI. Each item is an object with "name" and "url" keys. Modifying this should not be necessary unless you want to update the preferences GUI.
+
 # Split-horizon and blacklist
 
 With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know where the request are coming frome and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
