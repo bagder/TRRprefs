@@ -81,6 +81,10 @@ Entries are added to the TRR blacklist when the resolution fails with TRR but wo
 
 (default: `[{ "name": "Cloudflare", "url": "https://mozilla.cloudflare-dns.com/dns-query" }]`) JSON list of DoH resolver providers that should be presented in the preferences GUI. Each item is an object with "name" and "url" keys. Modifying this should not be necessary unless you want to update the preferences GUI.
 
+## network.trr.custom_uri
+
+(default: none) The custom DoH URI supplied by the user in the GUI preferences ("Custom"). This is not necessarily the same URI as will be used for DoH resolution, but is only used to store the user supplied text field value. See `network.trr.uri` for the setting that actually affects resolution. Modifying this should not be necessary unless you want to update the preferences GUI.
+
 # Split-horizon and blacklist
 
 With regular DNS, it is common to have clients in different places get different results back. This can be done since the servers know where the request are coming frome and they can then respond accordingly. When switching to another resolver with TRR, you may experience that you don’t always get the same set of addresses back. At times, this causes problems.
