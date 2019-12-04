@@ -13,7 +13,7 @@ set which resolver mode you want.
 
 3 - **Only**. Only use TRR. Never use the native (after the initial setup).
 
-  - **Note:** `network.trr.bootstrapAddress` must be set for resolution to work in TRR mode 3. See https://bugzilla.mozilla.org/show_bug.cgi?id=1600976
+  - **Note:** if using a hostname, `network.trr.bootstrapAddress` must be set for resolution to work in TRR mode 3. See https://bugzilla.mozilla.org/show_bug.cgi?id=1600976
 
 4 - **Shadow**. (removed)
 
