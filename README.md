@@ -1,3 +1,9 @@
+# Unofficial docs
+
+This is unofficial docs. The official TRR docs is availabine in [Mozilla's
+wiki](https://wiki.mozilla.org/Trusted_Recursive_Resolver) - and is largely
+based on the information we've collected here.
+
 # Preferences
 
 All preferences for the DNS-over-HTTPS functionality in Firefox are located under the `network.trr` prefix (TRR == Trusted Recursive Resolver). The support for these were added in Firefox 62.
