@@ -55,9 +55,11 @@ For more servers, see the unofficial [list of DoH servers](https://github.com/cu
 
 (default: example.com) Firefox will check an NS entry at startup to verify that TRR works to ensure proper configuration. This preference sets which domain to check. The verification only checks for a positive answer, it doesn't actually care what the response data says. Set this to `skip` to completely avoid confirmation.
 
-## network.trr.bootstrapAddress
+## network.trr.bootstrapAddr
 
 (default: none) by setting this field to the IP address of the host name used in "network.trr.uri", you can bypass using the system native resolver for it.
+
+**NOTE:** Before Firefox 89, this was named `network.trr.bootstrapAddress`.
 
 ## network.trr.blacklist-duration
 
