@@ -19,6 +19,8 @@ set which resolver mode you want.
 
 3 - **Only**. Only use TRR. Never use the native (after the initial setup).
 
+**NOTE:** If you're using a filtering DNS provider, you should set the mode to `3`.
+
 4 - **Shadow**. (removed)
 
 5 - **Off by choice** This is the same as 0 but marks it as done by choice and not done by default.
