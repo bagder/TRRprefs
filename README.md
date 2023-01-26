@@ -39,7 +39,7 @@ For more servers, see the unofficial [list of DoH servers](https://github.com/cu
 
 ## network.trr.wait-for-portal
 
-(default: true) set this boolean to **true** to tell Firefox to wait for the captive portal detection before TRR is used. (on Android, this will default to **false** since the captive portal handling is done outside of Firefox, by the OS itself.)
+(default: false) set this boolean to **true** to tell Firefox to wait for the captive portal detection before TRR is used. (on Android, this will default to **false** since the captive portal handling is done outside of Firefox, by the OS itself.)
 
 ## network.trr.allow-rfc1918
 
@@ -75,7 +75,7 @@ Entries are added to the TRR blacklist when the resolution fails with TRR but wo
 
 ## network.trr.max-fails
 
-(default: 5) If this many DoH requests fail in a row, consider TRR broken and go back to verify-NS state. This is meant to detect situations when the DoH server dies.
+(default: 15) If this many DoH requests fail in a row, consider TRR broken and go back to verify-NS state. This is meant to detect situations when the DoH server dies.
 
 ## network.trr.disable-ECS
 
